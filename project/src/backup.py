@@ -41,10 +41,13 @@ def makeBackup(e1, e2):
     w.geometry('330x90')
     w.resizable(0, 0)
 
-    filenames = listdir(e1.get())
+    filenames = listdir(e1.get() + "/saves")
+    print(filenames)
     liste = Listbox(w, width = 50, height = 3)
+    nb = 0
     for i in filenames:
-        liste.insert(i)
+        liste.insert(nb, i)
+        nb += 1
     liste.pack()
     bB = Button(w, text = "Select", command = saveWorld).pack(side = BOTTOM, pady = 10)
 
