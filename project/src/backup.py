@@ -6,6 +6,7 @@ from classes import *
 from functools import partial
 from tkinter.filedialog import *
 from sys import version_info
+from shutil import *
 if version_info.major == 2:
     from Tkinter import *
     from tkMessageBox import *
@@ -27,12 +28,21 @@ def askPathBc(e2):
     e2.delete(0, END)
     e2.insert(0, folder)
 
-def saveWorld():
-    pass
+def saveWorld(input, e1, e2, w):
+
+    try:
+        if e2.get() == "":
+            copytree(e1.get() + "/saves/" + input.get(input.curselection()), "./" + input.get(input.curselection()))
+        else:
+            copytree(e1.get() + "/saves/" + input.get(input.curselection()), e2.get() + "/" + input.get(input.curselection()))
+    except Error as e:
+        showerror("Error", 'Directory not copied. Error: %s' % e)
+    except OSError as e:
+        showerror("Error", 'Directory not copied. Error: %s' % e)
+    w.destroy()
 
 def makeBackup(e1, e2):
 
-    print(path.dirname(e1.get()))
     if path.basename(e1.get()) != ".minecraft":
         showerror("Error", "Minecraft folder hasn't been found.")
         return
@@ -42,14 +52,14 @@ def makeBackup(e1, e2):
     w.resizable(0, 0)
 
     filenames = listdir(e1.get() + "/saves")
-    print(filenames)
     liste = Listbox(w, width = 50, height = 3)
     nb = 0
     for i in filenames:
         liste.insert(nb, i)
         nb += 1
     liste.pack()
-    bB = Button(w, text = "Select", command = saveWorld).pack(side = BOTTOM, pady = 10)
+    Button(w, text = "Select", command = partial(saveWorld, liste, e1, e2, w)).pack(side = BOTTOM, pady = 10)
+    w.mainloop()
 
 def main():
 
@@ -57,15 +67,15 @@ def main():
     window.geometry('330x120')
     window.resizable(0, 0)
 
-    label = Label(window, text="Minecraft folder").place(x=0, y=0)
-    labe2 = Label(window, text="Backup Folder").place(x=0, y=30)
+    Label(window, text="Minecraft folder").place(x=0, y=0)
+    Label(window, text="Backup Folder").place(x=0, y=30)
     e1 = Entry(window, width = 30)
     e2 = Entry(window, width = 30)
     e1.place(x=100, y=0)
     e2.place(x=100, y=30)
-    bP1 = Button(window, text = "...", command = partial(askPathMc, e1)).place(x=300, y=0)
-    bP2 = Button(window, text = "...", command = partial(askPathBc, e2)).place(x=300, y=30)
-    bB = Button(window, text = "Backup", command = partial(makeBackup, e1, e2)).pack(side = BOTTOM, pady = 10)
+    Button(window, text = "...", command = partial(askPathMc, e1)).place(x=300, y=0)
+    Button(window, text = "...", command = partial(askPathBc, e2)).place(x=300, y=30)
+    Button(window, text = "Backup", command = partial(makeBackup, e1, e2)).pack(side = BOTTOM, pady = 10)
     window.mainloop()
 
 if __name__ == "__main__":
