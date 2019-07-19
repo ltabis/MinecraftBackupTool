@@ -1,8 +1,6 @@
 # backup file
 
-
 from os import *
-from classes import *
 from functools import partial
 from tkinter.filedialog import *
 from sys import version_info
@@ -40,6 +38,8 @@ def saveWorld(input, e1, e2, w):
     except OSError as e:
         showerror("Error", 'Directory not copied. Error: %s' % e)
     w.destroy()
+    showinfo("Success", "Backup done.")
+
 
 def makeBackup(e1, e2):
 
