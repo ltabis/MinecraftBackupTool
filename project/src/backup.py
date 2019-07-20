@@ -41,10 +41,19 @@ def saveWorld(input, e1, e2, w):
     showinfo("Success", "Backup done.")
 
 
+def checkFolder(e1):
+
+    filenames = listdir(e1.get())
+
+    for i in filenames:
+        if i == "saves":
+            return True
+    return False
+
 def makeBackup(e1, e2):
 
-    if path.basename(e1.get()) != ".minecraft":
-        showerror("Error", "Minecraft folder hasn't been found.")
+    if checkFolder(e1) == False:
+        showerror("Error", "Minecraft folder isn't right.")
         return
 
     w = Tk()
