@@ -40,7 +40,6 @@ def saveWorld(input, e1, e2, w):
     w.destroy()
     showinfo("Success", "Backup done.")
 
-
 def checkFolder(e1):
 
     filenames = listdir(e1.get())
